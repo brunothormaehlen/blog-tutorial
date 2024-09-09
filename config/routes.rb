@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "pages/show"
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -14,5 +15,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "home#index"
-end
 
+  get "page/:slug", to: "pages#show", slug: /[-a-z0-9+]*/, as: :page
+end
