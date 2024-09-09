@@ -12,6 +12,7 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
+require "factory_bot_rails"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -20,6 +21,10 @@ Bundler.require(*Rails.groups)
 
 module Blog
   class Application < Rails::Application
+    config.generators do |g|
+      g.test_framework :rspec, ficture: true
+      g.fixture_replacement :factory_bot, dir: 'spec/factories'
+    end
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
