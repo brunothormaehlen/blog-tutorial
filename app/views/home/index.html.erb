@@ -1,1 +1,6 @@
 <%= render partial: 'shared/pages', locals: { pages: @pages } %>
+<h3>TEST 😲</h3>
+<% @pages.each do |page| %>
+  <p><%= page %></p>
+<% end %>
+<h3>test over</h3>

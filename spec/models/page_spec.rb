@@ -10,6 +10,11 @@ RSpec.describe Page, type: :model do
     it { is_expected.to validate_presence_of(:content) }
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:page_tags).dependent(:destroy) }
+    it { is_expected.to have_many(:tags).through(:page_tags) }
+  end
+
   describe '#slug' do
     let(:page) { create(:page, title: '--Foo Bar! _ 87 --') }
 
@@ -73,7 +78,7 @@ RSpec.describe Page, type: :model do
 
   describe '.by_year_month' do
     let(:page1) { create(:page, created_at: Date.new(2022, 8, 10)) }
-    let(:page2) { create(:page, created_at:Date.new(2021, 04, 13)) }
+    let(:page2) { create(:page, created_at: Date.new(2021, 04, 13)) }
 
     before do
       [page1, page2]
@@ -81,6 +86,28 @@ RSpec.describe Page, type: :model do
 
     it 'returns pages for the given year and month' do
       expect(Page.by_year_month(2021, 4)).to match_array([page2])
+    end
+  end
+
+  describe '#update_tags' do
+    let(:page) { create(:page, tags_string: 'foo, bar') }
+
+    context 'when tags do not already exist' do
+      it 'creates new tags' do
+        expect { page }.to change(Tag, :count).by(2)
+        expect(page.tags.map(&:name)).to match_array(%w[foo bar])
+      end
+    end
+
+    context 'when tags are removed' do
+      let(:tag_names) { page.tags.map(&:name) }
+
+      before { page }
+
+      it 'removes tags' do
+        page.update(tags_string: 'foo')
+        expect(tag_names).to match_array(%w[foo])
+      end
     end
   end
 end
