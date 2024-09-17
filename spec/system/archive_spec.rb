@@ -16,6 +16,15 @@ RSpec.describe 'Archives' do
       within articles.first do
         expect(page).to have_css('h2', text: Page.first.title)
       end
+
+      retries = 0
+      begin
+        expect(page).to have_css('h2', text: Page.first.title, wait: 5)
+      rescue Selenium::WebDriver::Error::StaleElementReferenceError
+        retries += 1
+        retry if retries < 3
+        raise
+      end
     end
   end
 end
