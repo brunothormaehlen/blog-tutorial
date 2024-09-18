@@ -10,10 +10,8 @@ RSpec.describe 'Tag', type: :system do
 
   it 'displays clickable tags on a page' do
     visit root_path
-    p "😎"
     expect(page).to have_link('foo', href: '/tags/foo')
     expect(page).to have_link('bar', href: '/tags/bar')
-    p "😎"
 
     find_link(href: '/tags/foo').click
     expect(page).to have_content(page_1.title)
