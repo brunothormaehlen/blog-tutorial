@@ -66,3 +66,5 @@ group :test do
 end
 
 # gem 'factory_bot_rails', '~> 6.2'#
+
+gem "bcrypt", "~> 3.1"
