@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   get "pages/show"
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -21,4 +22,6 @@ Rails.application.routes.draw do
   get "/search/:year/:month", to: "search#index", year: /\d{4}/, month: /\d{2}/
   get 'tags/:name', to: 'tags#show', name: /[-a-z0-9_+]*/, as: :tag
   resources :images, only: :show
+  get "login", to: "sessions#new"
+  post 'login', to: 'sessions#create'
 end
