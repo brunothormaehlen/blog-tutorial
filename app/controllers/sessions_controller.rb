@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  layout "admin"
+
   def create
     user = User.find_by(email: params[:login][:email])
     if User.authenticate(user&.email, params[:login][:password])
@@ -7,5 +9,10 @@ class SessionsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def destroy
+    session[:admin_user_id] = nil
+    redirect_to root_path
   end
 end
